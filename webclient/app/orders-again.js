@@ -1,5 +1,5 @@
 import React from "react"
-import {createStore} from "redux"
+import {createStore, applyMiddleware} from "redux"
 import {connect, Provider} from "react-redux"
 import {addOrder} from "./actions"
 import {orders} from "./reducers"
@@ -38,31 +38,33 @@ const Order = ({order}) => (
 
 const mapStateToProps = (state) => {
   return {
-    orders: state.orders
+    orders: state.orders || []
   }
 }
 
 const OrderPage = connect(mapStateToProps)(({orders}) => {
-  console.log("page: ", orders);
   return (
     <div>
       <AddOrder />
       <Orders orders={orders} />
     </div>)});
 
-let someOrders = {
-  orders: [
-    {
-      name: "Potato Fries",
-      quantity: 2
-    }, {
-      name: "Pumpkin Pie",
-      quantity: 1
-    }
-  ]
+let remoteAction = store => next => action => {
+  if (action.meta && action.meta.remote) {
+    console.log("add order");
+  }
+  return next(action);
 }
 
-let store = createStore(orders, someOrders);
+let middleware = applyMiddleware(remoteAction);
+let store = createStore(orders, middleware);
+
+fetch(
+  "http://localhost:8080/orders")
+  .then(resp => resp.json())
+  .then(orders => {
+    store.dispatch({type: "ALL_ORDERS", orders})
+  })
 
 ReactDOM.render(
   <Provider store={store}>

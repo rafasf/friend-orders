@@ -20,8 +20,11 @@ export const orders = (state = [], action) => {
         ...state.orders,
         order(undefined, action)
       ]};
-      console.log(nextState);
       return nextState;
+    case "ALL_ORDERS":
+      return {
+        orders: action.orders
+      };
     default:
       return state;
   }
