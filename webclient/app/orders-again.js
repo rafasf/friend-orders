@@ -51,16 +51,27 @@ const OrderPage = connect(mapStateToProps)(({orders}) => {
 
 let remoteAction = store => next => action => {
   if (action.meta && action.meta.remote) {
-    console.log("add order");
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const newOrder = new Request("/orders", {
+      method: "POST",
+      headers: headers,
+      body: new Blob([JSON.stringify(action, null, 2)], {type : 'application/json'})
+    });
+    fetch(newOrder).then(response => {
+      console.log(response);
+      console.log(response.json());
+      next(action)
+    });
+  } else {
+    return next(action);
   }
-  return next(action);
 }
 
-let middleware = applyMiddleware(remoteAction);
-let store = createStore(orders, middleware);
+let store = createStore(orders, applyMiddleware(remoteAction));
 
-fetch(
-  "http://localhost:8080/orders")
+fetch("/orders")
   .then(resp => resp.json())
   .then(orders => {
     store.dispatch({type: "ALL_ORDERS", orders})

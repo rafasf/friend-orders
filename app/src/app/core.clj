@@ -11,7 +11,10 @@
    {:name "green tea" :quantity 1}])
 
 (defn create-order [req]
-  (println req))
+  (println req)
+  {:content-type "application/json"
+   :status 201
+   :body {:id "some-new-id"}})
 
 (defroutes all-routes
   (resources "/")
