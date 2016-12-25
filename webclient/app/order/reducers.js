@@ -1,6 +1,9 @@
+import {actionTypes} from "./action-types"
+
+console.log("......", actionTypes)
 export const order = (state = {}, action) => {
   switch(action.type) {
-    case "ADD_ORDER":
+    case actionTypes.AddOrder:
       return {
         id: "",
         name: action.name,
@@ -14,14 +17,14 @@ export const order = (state = {}, action) => {
 
 export const orders = (state = [], action) => {
   switch(action.type) {
-    case "ADD_ORDER":
+    case actionTypes.AddOrder:
       const nextState = {
         orders: [
         ...state.orders,
         order(undefined, action)
       ]};
       return nextState;
-    case "ALL_ORDERS":
+    case actionTypes.AllOrders:
       return {
         orders: action.orders
       };

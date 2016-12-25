@@ -1,8 +1,8 @@
 import React from "react"
 import {createStore, applyMiddleware} from "redux"
 import {Provider} from "react-redux"
-import {orders} from "./reducers"
-import OrderComponent from "./order/order-component"
+import {orders} from "./order/reducers"
+import OrderComponent from "./order/components/order-component"
 import ReactDOM from "react-dom"
 
 let remoteAction = store => next => action => {
