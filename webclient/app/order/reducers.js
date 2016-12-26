@@ -1,6 +1,5 @@
 import {actionTypes} from "./action-types"
 
-console.log("......", actionTypes)
 export const order = (state = {}, action) => {
   switch(action.type) {
     case actionTypes.AddOrder:

@@ -15,9 +15,8 @@ let remoteAction = store => next => action => {
       headers: headers,
       body: new Blob([JSON.stringify(action, null, 2)], {type : 'application/json'})
     });
+
     fetch(newOrder).then(response => {
-      console.log(response);
-      console.log(response.json());
       next(action)
     });
   } else {
